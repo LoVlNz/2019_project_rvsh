@@ -1,0 +1,67 @@
+#!/bin/bash
+
+check_passwd(){
+
+echo checkpasswd
+}
+normal_commande()
+{
+	if [ "$1" == "spt" ]
+	then echo $1 special_commande test
+		return 1
+	fi
+	echo $1 normal_commande
+	return 0
+
+}
+special_commande(){
+echo $1 special_commande
+return 0
+
+}
+run(){
+while [ $state -eq 1 ]
+do
+	read -p "$1" commande
+	normal_commande $commande
+	if [ $? -eq 1 ] 
+	then
+		if [ "$2" == "-s" ]
+		then
+				special_commande $commande
+		else
+			echo "pleas entre the right commande"
+		fi
+	fi
+done
+
+}
+
+state=1
+if [ "$1" == "-connect" ]
+then
+	a=$#
+	#check_argument
+	if [ $# != 3 ]
+	then 
+		echo "wrong number of the arguments"
+		exit 1
+	fi
+	#check_utilisateur||machine
+	run "$3@$2>" -n
+
+elif [ "$1" == "-admin" ]
+then
+	if [ $# != 1 ]
+	then 
+		echo "wrong number of the arguments"
+		exit 1
+	fi
+	check_passwd
+	run "rvsh>" -s
+
+else
+	echo "please entre the right options"
+fi
+
+
