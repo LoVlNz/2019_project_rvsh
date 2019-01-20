@@ -48,6 +48,8 @@ then
 		exit 1
 	fi
 	#check_utilisateur||machine
+	check_passwd
+	#check password of the machine
 	run "$3@$2>" -n
 
 elif [ "$1" == "-admin" ]
@@ -58,6 +60,7 @@ then
 		exit 1
 	fi
 	check_passwd
+	#check password of root
 	run "rvsh>" -s
 
 else
