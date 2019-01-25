@@ -1,16 +1,30 @@
 #!/bin/bash
+create_virtuelle_machine(){
+echo "create vm succseeful"
 
+
+	
+}
 check_passwd(){
 
 echo checkpasswd
 }
 normal_commande()
 {
-	if [ "$1" == "spt" ]
-	then echo $1 special_commande test
+	if [ "$1" == "q" ]
+	then
+		exit 1
+	elif [ "$1" == "connect" ]
+	then read  a 
+		./rvsh  $a
+		return 0
+	elif [ "$1" == "test" ]
+	then echo "test"
+		return 0
+	else 
 		return 1
 	fi
-	echo $1 normal_commande
+	#echo $1 normal_commande
 	return 0
 
 }
@@ -36,7 +50,7 @@ do
 done
 
 }
-
+create_virtuelle_machine
 state=1
 if [ "$1" == "-connect" ]
 then
@@ -67,5 +81,5 @@ else
 	echo "please entre the right options"
 fi
 
-#this is a test
+
 
