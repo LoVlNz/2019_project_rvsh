@@ -15,9 +15,12 @@ normal_commande()
 	then
 		exit 1
 	elif [ "$1" == "connect" ]
-	then read  a 
-		./rvsh  $a
+	then
+		state=2
 		return 0
+	elif [ "$1" == "su" ]
+	then	state=3
+			return 0
 	elif [ "$1" == "test" ]
 	then echo "test"
 		return 0
@@ -50,9 +53,8 @@ do
 done
 
 }
-create_virtuelle_machine
-state=1
-if [ "$1" == "-connect" ]
+run_commande(){
+if [ "$mode" == "-connect" ]
 then
 	a=$#
 	#check_argument
@@ -64,9 +66,9 @@ then
 	#check_utilisateur||machine
 	check_passwd
 	#check password of the machine
-	run "$3@$2>" -n
-
-elif [ "$1" == "-admin" ]
+	run "$machine@$user>" -n
+#end of connection
+elif [ "$mode" == "-admin" ]
 then
 	if [ $# != 1 ]
 	then 
@@ -76,10 +78,35 @@ then
 	check_passwd
 	#check password of root
 	run "rvsh>" -s
+#end of connection
 
 else
 	echo "please entre the right options"
 fi
-
+}
+create_virtuelle_machine
+flag=1
+state=1
+mode=$1
+user=$2
+machine=$3
+while [ $flag -eq 1 ]
+do
+	if [ $state == 1 ]
+	then
+		run_commande $mode $user $machine
+	elif [ $state == 2 ]
+	then 
+		read -p "entre the machine : " machine
+		state=1
+		run_commande $mode $user $machine
+	elif [ $state == 3 ]
+	then
+		read -p "entre the user : " user
+		state=1
+		run_commande $mode $user $machine
+		#if the user==root then run the admin
+	fi
+done
 
 
