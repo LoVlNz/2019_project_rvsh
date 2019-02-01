@@ -76,9 +76,14 @@ then
 		echo "wrong number of the arguments"
 		exit 1
 	fi
-	check_passwd
+	./outils/check_passwd admin ./rv/admin 
 	#check password of root
-	run "rvsh>" -s
+	if [ $? == 0 ]
+	then
+		run "rvsh>" -s
+	else
+		exit 1
+	fi
 #end of connection
 
 else
@@ -96,7 +101,7 @@ state=1
 mode=$1
 user=$2
 machine=$3
-./outils/check_file ./vms/admin
+./outils/check_file ./rv/admin
 if [ $? == 0 ]
 then
 	./outils/init_admin
