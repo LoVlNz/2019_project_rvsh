@@ -1,0 +1,8 @@
+#!/bin/bash
+./check_file $1
+if [ $? == 0 ]
+then
+	mkdir $1
+else
+	exit 1
+fi

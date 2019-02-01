@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ -f $1 -o -d $1 ]
+then
+	echo "file exit"
+	exit 1
+fi

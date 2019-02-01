@@ -1,0 +1,4 @@
+#!/bin/bash
+read -p "set the password of admin:" passwd
+echo $passwd > ./vms/admin
+
