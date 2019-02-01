@@ -1,0 +1,20 @@
+#!/bin/bash
+# 1 is the user name 2 is the machine name
+a=$(ls ./rv/vms | grep $2)
+if [ $? != 0 ]
+then
+	echo "no such virtuelle machine"
+	exit 1
+fi
+a=$(ls ./rv/users | grep $1)
+if [ $? != 0 ]
+then
+	echo "no such user "
+	exit 1
+fi
+mkdir ./rv/vms/$2/$1
+logtime=$(date)
+echo $logtime >> ./rv/users/$1/log_info
+echo $logtime >> ./rv/users/$1/login_info
+touch ./rv/online_users/$1
+

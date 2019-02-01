@@ -18,10 +18,12 @@ normal_commande()
 		state=2
 		return 0
 	elif [ "$1" == "su" ]
-	then	state=3
-			return 0
+	then
+		state=3
+		return 0
 	elif [ "$1" == "test" ]
-	then echo "test"
+	then
+	       	echo "test"
 		return 0
 	else 
 		return 1
@@ -39,6 +41,7 @@ special_commande(){
 			echo "host exit"
 		else
 			mkdir ./rv/vms/$2
+			echo "host established successfully"
 		fi
 	elif [ "$1" == "users" ]
 	then
@@ -54,6 +57,7 @@ special_commande(){
 		echo "set the password:"
 		read passwd
 		echo $2:$passwd >> ./rv/userlist
+		mkdir ./rv/users/$2
 		echo "add user successfully"
 	else
 		echo "no command found"
@@ -87,6 +91,11 @@ then
 		echo "wrong number of the arguments"
 		exit 1
 	fi
+	./outils/user_login $user $machine
+	if [ $? == 1 ]
+	then
+		exit 1
+	fi
 	#check_utilisateur||machine
 	./outils/check_passwd $user ./rv/userlist
 	#check password of the machine
@@ -99,6 +108,24 @@ then
 		echo "wrong number of the arguments"
 		exit 1
 	fi
+	./outils/check_file ./rv
+	if [ $? == 0 ]
+	then
+	        mkdir ./rv
+	        mkdir ./rv/vms
+	        mkdir ./rv/users
+	        touch ./rv/userlist
+		mkdir ./rv/online_users
+	        touch ./rv/log_admin
+		echo "initialize the rv successfully"
+	fi
+
+	./outils/check_file ./rv/admin
+	if [ $? == 0 ]
+	then
+	        ./outils/init_admin
+	fi
+
 	./outils/check_passwd admin ./rv/admin 
 	#check password of root
 	if [ $? == 0 ]
@@ -110,7 +137,7 @@ then
 #end of connection
 
 else
-	echo "please entre the right options"
+	echo "please enter the right options:-admin,-connect"
 	exit 1
 fi
 }
@@ -122,13 +149,8 @@ fi
 flag=1
 state=1
 mode=$1
-user=$2
-machine=$3
-./outils/check_file ./rv/admin
-if [ $? == 0 ]
-then
-	./outils/init_admin
-fi
+user=$3
+machine=$2
 
 while [ $flag -eq 1 ]
 do
