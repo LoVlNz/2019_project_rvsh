@@ -82,6 +82,7 @@ then
 
 else
 	echo "please entre the right options"
+	exit 1
 fi
 }
 create_virtuelle_machine
