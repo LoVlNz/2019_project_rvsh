@@ -3,8 +3,6 @@ create_virtuelle_machine(){
 	
 	echo "create vm succseeful"
 
-
-	
 }
 check_passwd(){
 
@@ -35,12 +33,12 @@ normal_commande()
 special_commande(){
 	if [ "$1" == "host" ]
 	then
-		./outils/check_file ./rv/$2
+		./outils/check_file ./rv/vms/$2
 		if [ $? == 1 ]
 		then
 			echo "host exit"
 		else
-			mkdir ./rv/$2
+			mkdir ./rv/vms/$2
 		fi
 	elif [ "$1" == "users" ]
 	then
@@ -92,7 +90,7 @@ then
 	#check_utilisateur||machine
 	./outils/check_passwd $user ./rv/userlist
 	#check password of the machine
-	run "$machine@$user>" -n
+	run "$user@$machine>" -n
 #end of connection
 elif [ "$mode" == "-admin" ]
 then

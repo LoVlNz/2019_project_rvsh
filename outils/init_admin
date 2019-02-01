@@ -1,4 +1,5 @@
 #!/bin/bash
 read -p "set the password of admin:" passwd
 echo "admin:$passwd" > ./rv/admin
+mkdir ./rv/vms
 
