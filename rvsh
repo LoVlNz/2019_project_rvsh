@@ -33,9 +33,34 @@ normal_commande()
 
 }
 special_commande(){
-echo $1 special_commande
-return 0
-
+	if [ "$1" == "host" ]
+	then
+		./outils/check_file ./rv/$2
+		if [ $? == 1 ]
+		then
+			echo "host exit"
+		else
+			mkdir ./rv/$2
+		fi
+	elif [ "$1" == "users" ]
+	then
+		while read line
+		do
+			name=$(echo "$line" | cut -d ":" -f1)
+			if [ "$2" == "$name" ]
+			then
+				echo "Error:user exit"
+				return 0
+			fi
+		done<./rv/userlist
+		echo "set the password:"
+		read passwd
+		echo $2:$passwd >> ./rv/userlist
+		echo "add user successfully"
+	else
+		echo "no command found"
+	fi
+	return 0
 }
 run(){
 while [ $state -eq 1 ]
@@ -65,7 +90,7 @@ then
 		exit 1
 	fi
 	#check_utilisateur||machine
-	check_passwd
+	./outils/check_passwd $user ./rv/userlist
 	#check password of the machine
 	run "$machine@$user>" -n
 #end of connection
