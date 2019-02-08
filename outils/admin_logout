@@ -1,0 +1,4 @@
+#!/bin/bash
+logtime=$(date)
+echo "logout: " $logtime >> ./rv/log_admin
+

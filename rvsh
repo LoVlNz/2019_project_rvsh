@@ -12,6 +12,13 @@ normal_commande()
 {
 	if [ "$1" == "q" ]
 	then
+		if [ $user == "admin" ]
+		then
+			./outils/admin_logout
+		else
+			echo "exit with user"
+			./outils/user_logout $user $machine
+		fi
 		exit 1
 	elif [ "$1" == "connect" ]
 	then
@@ -100,6 +107,7 @@ then
 	./outils/check_passwd $user ./rv/userlist
 	#check password of the machine
 	run "$user@$machine>" -n
+	./outils/user_logout $user $machine
 #end of connection
 elif [ "$mode" == "-admin" ]
 then
@@ -125,12 +133,15 @@ then
 	then
 	        ./outils/init_admin
 	fi
+	./outils/admin_login
 
 	./outils/check_passwd admin ./rv/admin 
 	#check password of root
 	if [ $? == 0 ]
 	then
+		user="admin"
 		run "rvsh>" -s
+		./outils/admin_logout
 	else
 		exit 1
 	fi
