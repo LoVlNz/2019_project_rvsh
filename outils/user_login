@@ -1,5 +1,5 @@
 #!/bin/bash
-# 1 is the user name 2 is the machine name
+# 1 is the user name 2 is the machine name 3 is the userid
 a=$(ls ./rv/vms | grep $2)
 if [ $? != 0 ]
 then
@@ -17,5 +17,10 @@ logtime=$(date)
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/log_info
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/login_info
 echo $2 $logtime >> ./rv/online_users/$1
-echo $1 $2 $logtime >> ./rv/online_data
+./outils/check_file ./rv/online_users
+if [ $? == 1 ]
+then
+	echo $1 $2 $logtime >> ./rv/online_data
+fi
+echo "$3 $1 $2 $logtime" >> ./rv/online_users_id
 

@@ -34,9 +34,22 @@ normal_commande()
 		return 0
 	elif [ "$1" == "who" ]
 	then
+		while read line
+		do
+			nnname=$(echo $line | cut -d " " -f2)
+			heure=$(echo $line | cut -d " " -f8)
+			echo -e "$nnname\t$heure"
+		done<./rv/online_users_id
 		return 0
 	elif [ "$1" == "rusers" ]
 	then
+		while read line
+		do
+			nnname=$(echo $line | cut -d " " -f1)
+			mmmachine=$(echo $line | cut -d " " -f2)
+			here=$(echo $line | cut -d " " -f7)
+			echo -e "$nnname\t$mmmachine\t$here"
+		done<./rv/online_data
 		return 0
 	elif [ "$1" == "finger" ]
 	then
@@ -49,14 +62,14 @@ normal_commande()
 		if [ $tmpname == "admin" ]
 		then
 			echo "Login: admin Name:admin"
-			echo "Directory:$(pwd)/rv/admin Shell:/bin/bash"
+			echo "Directory:$(pwd)/rv/admin Shell:$(pwd)/rvsh"
 			cat ./rv/log_admin
 		else
 			./outils/check_file ./rv/users/$tmpname
 			if [ $? == 1 ]
 			then
 				echo "Login: $tmpname Name:$tmpname"
-				echo "Directory:$(pwd)/rv/users/$tmpname Shell:/bin/bash"
+				echo "Directory:$(pwd)/rv/users/$tmpname Shell:$(pwd)/rvsh"
 				cat ./rv/users/$tmpname/log_info
 			else
 				echo "user $tmpname not found"
@@ -129,7 +142,7 @@ then
 		echo "wrong number of the arguments"
 		exit 1
 	fi
-	./outils/user_login $user $machine
+	./outils/user_login $user $machine $usernum
 	if [ $? == 1 ]
 	then
 		exit 1
@@ -138,7 +151,7 @@ then
 	./outils/check_passwd $user ./rv/userlist
 	#check password of the machine
 	run "$user@$machine>" -n
-	./outils/user_logout $user $machine
+	./outils/user_logout $user $machine $usernum
 #end of connection
 elif [ "$mode" == "-admin" ]
 then
@@ -156,6 +169,7 @@ then
 	        touch ./rv/userlist
 		mkdir ./rv/online_users
 	        touch ./rv/log_admin
+		touch ./rv/online_num
 		echo "initialize the rv successfully"
 	fi
 
@@ -193,7 +207,7 @@ state=1
 mode=$1
 user=$3
 machine=$2
-
+usernum=$(cat ./rv/online_num)
 while [ $flag -eq 1 ]
 do
 	if [ $state == 1 ]
