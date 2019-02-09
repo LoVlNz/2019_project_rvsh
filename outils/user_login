@@ -14,7 +14,8 @@ then
 fi
 mkdir ./rv/vms/$2/$1
 logtime=$(date)
-echo "login: "$2$1$logtime >> ./rv/users/$1/log_info
-echo "login: "$2$1$logtime >> ./rv/users/$1/login_info
-touch ./rv/online_users/$1
+echo "login: "$2 $1 $logtime >> ./rv/users/$1/log_info
+echo "login: "$2 $1 $logtime >> ./rv/users/$1/login_info
+echo $2 $logtime >> ./rv/online_users/$1
+echo $1 $2 $logtime >> ./rv/online_data
 

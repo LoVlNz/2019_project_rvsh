@@ -3,5 +3,6 @@
 rm -rf ./rv/vms/$2/$1
 rm -rf ./rv/online_users/$1
 logtime=$(date)
-echo "logout: "$2$1$logtime >> ./rv/users/$1/log_info
-echo "logout: "$2$1$logtime >> ./rv/users/$1/logout_info
+echo "logout: "$2 $1 $logtime >> ./rv/users/$1/log_info
+echo "logout: "$2 $1 $logtime >> ./rv/users/$1/logout_info
+sed -i 's/^$1.*//g' ./rv/online_data

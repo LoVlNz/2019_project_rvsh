@@ -32,6 +32,37 @@ normal_commande()
 	then
 	       	echo "test"
 		return 0
+	elif [ "$1" == "who" ]
+	then
+		return 0
+	elif [ "$1" == "rusers" ]
+	then
+		return 0
+	elif [ "$1" == "finger" ]
+	then
+		if [ $# == 1 ]
+		then
+			tmpname=$user
+		else
+			tmpname=$2
+		fi
+		if [ $tmpname == "admin" ]
+		then
+			echo "Login: admin Name:admin"
+			echo "Directory:$(pwd)/rv/admin Shell:/bin/bash"
+			cat ./rv/log_admin
+		else
+			./outils/check_file ./rv/users/$tmpname
+			if [ $? == 1 ]
+			then
+				echo "Login: $tmpname Name:$tmpname"
+				echo "Directory:$(pwd)/rv/users/$tmpname Shell:/bin/bash"
+				cat ./rv/users/$tmpname/log_info
+			else
+				echo "user $tmpname not found"
+				return 1
+			fi
+		fi
 	else 
 		return 1
 	fi
