@@ -1,0 +1,6 @@
+#!/bin/bash
+#1 machine
+#2 user
+cat ./rv/vms/$1/$2/message_new
+cat ./rv/vms/$1/$2/message_new >> ./rv/vms/$1/$2/message_total
+echo > ./rv/vms/$1/$2/message_new

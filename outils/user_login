@@ -13,6 +13,8 @@ then
 	exit 1
 fi
 mkdir ./rv/vms/$2/$1
+touch ./rv/vms/$2/$1/message_new
+touch ./rv/vms/$2/$1/message_total
 logtime=$(date)
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/log_info
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/login_info
