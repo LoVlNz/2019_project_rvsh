@@ -29,6 +29,23 @@ normal_commande()
 	then
 		state=3
 		return 0
+	elif [ "$1" == "write" ]
+	then
+		a=$(echo $2 | awk 'BEGIN{FS="@"}{print $1}')
+		#a=user name
+		b=$(echo $2 | awk 'BEGIN{FS="@"}{print $2}')
+		#b=machine name
+		./outils/check_file ./rv/vms/$b/$a/message_new
+		if [ $? == 1 ]
+		then
+			echo message from $user@$machine   time:$(date) >>./rv/vms/$b/$a/message_new
+			for ((i=3;i<=$#;i=i+1)); 
+			do
+				printf "${!i} ">>./rv/vms/$b/$a/message_new
+			done
+		else 
+			echo "please entre the rignt arguments"
+		fi
 	elif [ "$1" == "test" ]
 	then
 	       	echo "test"
@@ -52,6 +69,10 @@ normal_commande()
 			echo -e "$nnname\t$mmmachine\t$here"
 		done<./rv/online_data
 		return 0
+	elif [ "$1" == "passwd" ]
+	then
+			./outils/change_passwd $user 
+
 	elif [ "$1" == "finger" ]
 	then
 		if [ $# == 1 ]
@@ -119,6 +140,7 @@ special_commande(){
 run(){
 while [ $state -eq 1 ]
 do
+	stty erase ^H
 	read -p "$1" commande
 	normal_commande $commande
 	if [ $? -eq 1 ] 
@@ -201,7 +223,6 @@ fi
 
 
 ###################################################
-
 
 flag=1
 state=1

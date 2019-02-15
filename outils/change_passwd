@@ -1,0 +1,7 @@
+#!/bin/bash
+user=$1
+stty erase ^H
+read -p "entre the new password:" password
+sed -i "s/^$user:[0-9]*/$user:$password/g" ./rv/userlist
+
+
