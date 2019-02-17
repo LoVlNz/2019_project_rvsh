@@ -29,6 +29,15 @@ normal_commande()
 	then
 		state=3
 		return 0
+	elif [ "$1" == "rhost" ]
+	then
+		for dir in $(ls ./rv/vms)
+		do
+			if [ -d ./rv/vms/$dir ]
+			then
+				echo $dir
+			fi
+		done
 	elif [ "$1" == "write" ]
 	then
 		a=$(echo $2 | awk 'BEGIN{FS="@"}{print $1}')
@@ -54,9 +63,14 @@ normal_commande()
 	then
 		while read line
 		do
-			nnname=$(echo $line | cut -d " " -f2)
-			heure=$(echo $line | cut -d " " -f8)
-			echo -e "$nnname\t$heure"
+			mac=$(echo $line | cut -d " " -f3)
+			if [ $mac == $machine ]
+			then
+				nnname=$(echo $line | cut -d " " -f2)
+				heure=$(echo $line | cut -d " " -f8)
+				num=$(echo $line | cut -d " " -f1)
+				echo -e "$nnname\tpts/$num\t$heure"
+			fi
 		done<./rv/online_users_id
 		return 0
 	elif [ "$1" == "rusers" ]
@@ -230,6 +244,13 @@ mode=$1
 user=$3
 machine=$2
 usernum=$(cat ./rv/online_num)
+t=$(tty)
+if [ -f ./rv/online_users/$3/num_iter ]
+then
+	id=$(cat ./rv/online_users/$3/num_iter)
+else
+	id=0
+fi
 while [ $flag -eq 1 ]
 do
 	if [ $state == 1 ]

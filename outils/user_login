@@ -12,17 +12,30 @@ then
 	echo "no such user "
 	exit 1
 fi
-mkdir ./rv/vms/$2/$1
-touch ./rv/vms/$2/$1/message_new
-touch ./rv/vms/$2/$1/message_total
+if [ ! -d ./rv/vms/$2/$1 ]
+then
+	mkdir ./rv/vms/$2/$1
+	touch ./rv/vms/$2/$1/message_new
+	touch ./rv/vms/$2/$1/message_total
+fi
 logtime=$(date)
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/log_info
 echo "login: "$2 $1 $logtime >> ./rv/users/$1/login_info
-echo $2 $logtime >> ./rv/online_users/$1
-./outils/check_file ./rv/online_users
+if [ -d ./rv/online_users/$1 ]
+then
+	num=$(cat ./rv/online_users/$1/num_ter)
+	num=$(($num+1))
+	echo $num > ./rv/online_users/$1/num_ter
+	echo "$num $1 $2 $logtime" >> ./rv/online_users_id
+else
+	mkdir ./rv/online_users/$1
+	echo 0 > ./rv/online_users/$1/num_ter
+	echo "0 $1 $2 $logtime" >> ./rv/online_users_id
+fi
+echo $2 $logtime >> ./rv/online_users/$1/login_time
+./outils/check_file ./rv/online_users/$1
 if [ $? == 1 ]
 then
 	echo $1 $2 $logtime >> ./rv/online_data
 fi
-echo "$3 $1 $2 $logtime" >> ./rv/online_users_id
 
