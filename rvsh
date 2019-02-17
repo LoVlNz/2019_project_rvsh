@@ -4,10 +4,6 @@ create_virtuelle_machine(){
 	echo "create vm succseeful"
 
 }
-check_passwd(){
-
-echo checkpasswd
-}
 normal_commande()
 {
 	./outils/check_message $machine $user
@@ -187,6 +183,10 @@ then
 	fi
 	#check_utilisateur||machine
 	./outils/check_passwd $user ./rv/userlist
+	if [ $? == 1 ]
+	then
+		exit 1
+	fi
 	#check password of the machine
 	run "$user@$machine>" -n
 	./outils/user_logout $user $machine $usernum
@@ -217,8 +217,11 @@ then
 	        ./outils/init_admin
 	fi
 	./outils/admin_login
-
 	./outils/check_passwd admin ./rv/admin 
+	if [ $? == 1 ]
+	then
+		exit 1
+	fi
 	#check password of root
 	if [ $? == 0 ]
 	then
