@@ -19,6 +19,7 @@ normal_commande()
 		else
 			echo "exit with user"
 			./outils/user_logout $user $machine
+			sed -i "/^$id $user $machine/d" ./rv/online_users_id
 		fi
 		exit 1
 	elif [ "$1" == "connect" ]
@@ -248,6 +249,7 @@ t=$(tty)
 if [ -f ./rv/online_users/$3/num_iter ]
 then
 	id=$(cat ./rv/online_users/$3/num_iter)
+	id=$(($id+1))
 else
 	id=0
 fi
