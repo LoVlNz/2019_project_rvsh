@@ -6,7 +6,17 @@ create_virtuelle_machine(){
 }
 normal_commande()
 {
+#	./outils/check_message $machine $user
+{
+
+if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
+	
+	then
 	./outils/check_message $machine $user
+		
+		fi
+	}&
+
 	if [ "$1" == "q" ]
 	then
 		if [ $user == "admin" ]
@@ -149,8 +159,28 @@ special_commande(){
 	return 0
 }
 run(){
-while [ $state -eq 1 ]
+	
+	
+
+
+#	while [ $state -eq 1 ]
+#	do 
+#		if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
+
+#	then
+#	./outils/check_message $machine $user
+	
+#	fi
+#	wait
+
+#done
+	
+
+	while [ $state -eq 1 ]
+#for ((i=1;i>=$state;i=i))
 do
+	{
+	
 	stty erase ^H
 	read -p "$1" commande
 	normal_commande $commande
@@ -163,9 +193,12 @@ do
 			echo "pleas entre the right commande"
 		fi
 	fi
-done
+	wait
+} 
 
-}
+done
+ }
+
 run_commande(){
 if [ "$mode" == "-connect" ]
 then
