@@ -16,6 +16,7 @@ if [ ! -d ./rv/vms/$2/$1 ]
 then
 	mkdir ./rv/vms/$2/$1
 	touch ./rv/vms/$2/$1/message_new
+	echo > ./rv/vms/$2/$1/message_new
 	touch ./rv/vms/$2/$1/message_total
 fi
 logtime=$(date)
