@@ -194,7 +194,7 @@ do
 			echo "pleas entre the right commande"
 		fi
 	fi
-	wait
+	
 } 
 
 done
