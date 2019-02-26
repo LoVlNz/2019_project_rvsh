@@ -7,15 +7,15 @@ create_virtuelle_machine(){
 normal_commande()
 {
 #	./outils/check_message $machine $user
-{
 
-if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
+
+#if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
 	
-	then
-	./outils/check_message $machine $user
+#	then
+#	./outils/check_message $machine $user
 		
-		fi
-	}&
+#		fi
+	
 
 	if [ "$1" == "q" ]
 	then
@@ -62,6 +62,7 @@ if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
 		else 
 			echo "please entre the rignt arguments"
 		fi
+		return 0
 	elif [ "$1" == "test" ]
 	then
 	       	echo "test"
@@ -221,7 +222,9 @@ then
 		exit 1
 	fi
 	#check password of the machine
+	./outils/check_message $machine $user & 
 	run "$user@$machine>" -n
+	ps -ef | grep check_message |kill -9
 	./outils/user_logout $user $machine $usernum
 #end of connection
 elif [ "$mode" == "-admin" ]
