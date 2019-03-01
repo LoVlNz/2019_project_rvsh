@@ -5,10 +5,10 @@ read -p "password:" password
 while read line
 do
 	name=$(echo $line | cut -d ":" -f1)
-	if [ $name == $1 ]
+	if [[ $name == $1 ]]
 	then
 		passwd=$(echo $line | cut -d ":" -f2)
-		if [ $password == $passwd ]
+		if [[ $password = $passwd ]]
 		then
 			exit 0
 		else

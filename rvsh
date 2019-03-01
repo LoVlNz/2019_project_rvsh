@@ -75,7 +75,7 @@ normal_commande()
 			if [ $mac == $machine ]
 			then
 				nnname=$(echo $line | cut -d " " -f2)
-				heure=$(echo $line | cut -d " " -f8)
+				heure=$(echo $line | cut -d " " -f7)
 				num=$(echo $line | cut -d " " -f1)
 				echo -e "$nnname\tpts/$num\t$heure"
 			fi
@@ -108,6 +108,8 @@ normal_commande()
 			echo "Login: admin Name:admin"
 			echo "Directory:$(pwd)/rv/admin Shell:$(pwd)/rvsh"
 			cat ./rv/log_admin
+			echo "No mail"
+			echo "No plan"
 		else
 			./outils/check_file ./rv/users/$tmpname
 			if [ $? == 1 ]
@@ -115,6 +117,8 @@ normal_commande()
 				echo "Login: $tmpname Name:$tmpname"
 				echo "Directory:$(pwd)/rv/users/$tmpname Shell:$(pwd)/rvsh"
 				cat ./rv/users/$tmpname/log_info
+				echo "No mail"
+				echo "No plan"
 			else
 				echo "user $tmpname not found"
 				return 1
@@ -137,6 +141,35 @@ special_commande(){
 		else
 			mkdir ./rv/vms/$2
 			echo "host established successfully"
+		fi
+	elif [ "$1" == "afinger" ]
+	then
+		if [ $# == 1 ]
+		then
+			tmpname=admin
+		else
+			tmpname=$2
+		fi
+		if [ $tmpname == "admin" ]
+		then
+			echo "Login: admin Name:admin"
+			echo "Directory:$(pwd)/rv/admin Shell:$(pwd)/rvsh"
+			cat ./rv/log_admin
+			echo "No mail"
+			echo "No plan"
+		else
+			./outils/check_file ./rv/users/$tmpname
+			if [ $? == 1 ]
+			then
+				echo "Login: $tmpname Name:$tmpname"
+				echo "Directory:$(pwd)/rv/users/$tmpname Shell:$(pwd)/rvsh"
+				cat ./rv/users/$tmpname/log_info
+				echo "No mail"
+				echo "No plan"
+			else
+				echo "user $tmpname not found"
+				return 1
+			fi
 		fi
 	elif [ "$1" == "users" ]
 	then
@@ -222,10 +255,10 @@ then
 		exit 1
 	fi
 	#check password of the machine
-	./outils/check_message $machine $user & 
+	#./outils/check_message $machine $user & 
 	run "$user@$machine>" -n
-	ps -ef | grep check_message |kill -9
-	./outils/user_logout $user $machine $usernum
+	#ps -ef | grep check_message |kill -9
+	#./outils/user_logout $user $machine $usernum
 #end of connection
 elif [ "$mode" == "-admin" ]
 then
