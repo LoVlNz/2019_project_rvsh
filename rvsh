@@ -24,10 +24,13 @@ normal_commande()
 			./outils/admin_logout
 		else
 			echo "exit with user"
+		#./outils/delete_message
 			./outils/user_logout $user $machine
 			sed -i "/^$id $user $machine/d" ./rv/online_users_id
 		fi
-		exit 1
+		flag=2
+		state=4
+		
 	elif [ "$1" == "connect" ]
 	then
 		state=2
@@ -255,10 +258,12 @@ then
 		exit 1
 	fi
 	#check password of the machine
-	#./outils/check_message $machine $user & 
+	./outils/check_message $machine $user & 
 	run "$user@$machine>" -n
-	#ps -ef | grep check_message |kill -9
-	#./outils/user_logout $user $machine $usernum
+	echo 1
+   ./outils/delete_message
+	echo 2
+	./outils/user_logout $user $machine $usernum
 #end of connection
 elif [ "$mode" == "-admin" ]
 then
