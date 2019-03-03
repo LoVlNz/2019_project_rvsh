@@ -4,19 +4,7 @@ create_virtuelle_machine(){
 	echo "create vm succseeful"
 
 }
-normal_commande()
-{
-#	./outils/check_message $machine $user
-
-
-#if [ 1 != $(cat ./rv/vms/$machine/$user/message_new | wc -c) ]
-	
-#	then
-#	./outils/check_message $machine $user
-		
-#		fi
-	
-
+normal_commande(){
 	if [ "$1" == "q" ]
 	then
 		if [ $user == "admin" ]
@@ -24,7 +12,7 @@ normal_commande()
 			./outils/admin_logout
 		else
 			echo "exit with user"
-		#./outils/delete_message
+
 			./outils/user_logout $user $machine
 			sed -i "/^$id $user $machine/d" ./rv/online_users_id
 		fi
@@ -212,7 +200,7 @@ run(){
 
 #done
 	
-
+sleep 1
 	while [ $state -eq 1 ]
 #for ((i=1;i>=$state;i=i))
 do
@@ -260,10 +248,7 @@ then
 	#check password of the machine
 	./outils/check_message $machine $user & 
 	run "$user@$machine>" -n
-	echo 1
    ./outils/delete_message
-	echo 2
-	./outils/user_logout $user $machine $usernum
 #end of connection
 elif [ "$mode" == "-admin" ]
 then
@@ -323,9 +308,9 @@ user=$3
 machine=$2
 usernum=$(cat ./rv/online_num)
 t=$(tty)
-if [ -f ./rv/online_users/$3/num_iter ]
+if [ -f ./rv/online_users/$3/num_ter ]
 then
-	id=$(cat ./rv/online_users/$3/num_iter)
+	id=$(cat ./rv/online_users/$3/num_ter)
 	id=$(($id+1))
 else
 	id=0
