@@ -306,7 +306,7 @@ state=1
 mode=$1
 user=$3
 machine=$2
-usernum=$(cat ./rv/online_num)
+#usernum=$(cat ./rv/online_num)
 t=$(tty)
 if [ -f ./rv/online_users/$3/num_ter ]
 then
